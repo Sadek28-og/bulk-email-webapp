@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bulk Email Sender</title>
+    <style>
+        body {
+            font-family: Arial;
+            margin: 30px;
+            background: #f9f9f9;
+        }
+        .container {
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            width: 500px;
+            margin: auto;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        input, textarea {
+            width: 100%;
+            margin-top: 8px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 15px;
+        }
+        button {
+            padding: 10px 20px;
+            background: #007bff;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .log {
+            margin-top: 20px;
+            background: #eee;
+            padding: 10px;
+            height: 150px;
+            overflow-y: scroll;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>📤 Bulk Email Sender</h2>
+        {% if message %}
+            <p><strong>{{ message }}</strong></p>
+        {% endif %}
+        <form method="POST" enctype="multipart/form-data">
+            <label>Gmail Address:</label>
+            <input type="email" name="sender_email" required>
+
+            <label>App Password:</label>
+            <input type="password" name="sender_password" required>
+
+            <label>Email Subject:</label>
+            <input type="text" name="subject" required>
+
+            <label>Message Body:</label>
+            <textarea name="message" rows="5" required></textarea>
+
+            <label>Upload Email List (.txt):</label>
+            <input type="file" name="email_file" accept=".txt" required>
+
+            <button type="submit">Send Emails</button>
+        </form>
+
+        {% if status_log %}
+        <div class="log">
+            {% for line in status_log %}
+                <p>{{ line }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
