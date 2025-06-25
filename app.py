@@ -20,7 +20,8 @@ def index():
         if not email_file:
             return "⚠️ Please upload a file containing recipient emails."
 
-        recipients = email_file.read().decode("utf-8").splitlines()
+        # Clean email list (remove empty lines and spaces)
+        recipients = [line.strip() for line in email_file.read().decode("utf-8").splitlines() if line.strip()]
 
         for recipient in recipients:
             msg = EmailMessage()
@@ -29,8 +30,9 @@ def index():
             msg["To"] = recipient
             msg.set_content(message_body)
 
-            # If an attachment is uploaded
+            # If attachment exists, reset pointer and attach file
             if attachment:
+                attachment.stream.seek(0)
                 filename = attachment.filename
                 file_data = attachment.read()
                 msg.add_attachment(file_data, maintype="application", subtype="octet-stream", filename=filename)
@@ -43,7 +45,7 @@ def index():
             except Exception as e:
                 print(f"❌ Failed to send to {recipient}: {e}")
 
-        return "✅ All emails have been processed!"
+        return "✅ All emails have been processed successfully!"
 
     return render_template("index.html")
 
